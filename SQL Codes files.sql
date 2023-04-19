@@ -1,4 +1,3 @@
-
 /* 
  Dbeaver Sample Database Exploration:
  
@@ -142,7 +141,6 @@ On Playlist.PlaylistId = PlaylistTrack.PlaylistId
 Left Join Track On PlaylistTrack.TrackId = Track.TrackId 
 Group by Playlist.Name
 
-
 --Create a list for BillingCountry, BillingCity, total, and the Sum Total for a country  
 
 Select BillingCountry, BillingCity, Total, SUM(Total) OVER (PARTITION BY BillingCountry) as Sum_Total_Country
@@ -182,9 +180,4 @@ Select diff_table.BillingCountry, ROUND(AVG(diff_table.difference),2)
 From diff_table
 Group By diff_table.BillingCountry 
 
-
-
- 
-
-
-
+-- --Max total per country was divided by avg total per country 
