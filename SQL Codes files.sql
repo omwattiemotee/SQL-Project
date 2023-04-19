@@ -180,4 +180,4 @@ Select diff_table.BillingCountry, ROUND(AVG(diff_table.difference),2)
 From diff_table
 Group By diff_table.BillingCountry 
 
--- --Max total per country was divided by avg total per country 
+--Max total per country was divided by avg total per country to see how sales were deviated from the avg total per country. 
