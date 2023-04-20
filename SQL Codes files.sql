@@ -1,9 +1,44 @@
 /* 
- Dbeaver Sample Database Exploration:
+ Dbeaver Sample Database Cleaning, Analyzing & Exploration:
  
 Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
 
 */
+
+--Removes duplicates 
+
+--List and rank all sales from highest to lowest for each customer Id. 
+
+--Using ROW_NUMBER() --NOTE DUPLICATES 
+
+SELECT CustomerId, Total,
+ROW_NUMBER() OVER(PARTITION BY CustomerId ORDER BY Total DESC) AS Row_Num
+FROM Invoice i
+
+--Using RANK() --Note DUPLICATES
+
+SELECT CustomerId, Total,
+RANK() OVER(PARTITION BY CustomerId ORDER BY Total DESC) as Row_Num
+FROM Invoice i 
+
+--Change Null by replacing it with 0 in Employee table. 
+
+Update Employee 
+Set ReportsTo = 0 
+Where ReportsTo is null
+
+--Set null to N/A in Customer table
+
+Update Customer 
+Set Company = 'N/A'
+Where Company is null 
+
+--Select the full name of an employee and the full name of their supervisor
+
+Select e.FirstName ||" "|| e.LastName as Employee, e.ReportsTo, 
+Employee.FirstName ||" "||Employee.LastName as Supervisor   
+From Employee Join Employee e 
+On Employee.EmployeeId = e.ReportsTo 
 
 --Pull all invoice fromcountries that are not the US & Canada
 
@@ -54,13 +89,6 @@ From Invoice i
 Where BillingCountry != 'USA' And BillingCountry != 'Canada'
 Group by BillingCountry 
 Having Average_sales > 6.00
-
---Select the full name of an employee and the full name of their supervisor
-
-Select e.FirstName ||" "|| e.LastName as Employee, e.ReportsTo, 
-Employee.FirstName ||" "||Employee.LastName as Supervisor   
-From Employee Join Employee e 
-On Employee.EmployeeId = e.ReportsTo 
        
 --Add Row Numbers to every record in the previously created table
 
@@ -97,20 +125,6 @@ FROM Artist a
 JOIN Album a2 
 ON a.ArtistId = a2.ArtistId)
 WHERE Row_Num > 5
-
---List and rank all sales from highest to lowest for each customer Id. 
-
---Using ROW_NUMBER() --NOTE DUPLICATES 
-
-SELECT CustomerId, Total,
-ROW_NUMBER() OVER(PARTITION BY CustomerId ORDER BY Total DESC) AS Row_Num
-FROM Invoice i
-
---Using RANK() --Note DUPLICATES
-
-SELECT CustomerId, Total,
-RANK() OVER(PARTITION BY CustomerId ORDER BY Total DESC) as Row_Num
-FROM Invoice i 
 
 --Find the top 5 sales in for each customer ID 
 
